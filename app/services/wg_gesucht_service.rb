@@ -31,7 +31,7 @@ class WgGesuchtService
 
   def find_rooms
     city_form_page = @a.get("#{@base_url}wg-zimmer-in-Hamburg.55.0.1.0.html")
-    pages_amount = city_form_page.links.select { |x| x.text.squish.match(/^[0-9]+$/) }.last.text.squish.to_i
+    pages_amount = city_form_page.links.select { |x| x.text.squish.match(/^[0-9]+$/) }.try(:last).try(:text).try(:squish).to_i
     0.upto(pages_amount) do |page|
       city_form_page = @a.get("#{@base_url}wg-zimmer-in-Hamburg.55.0.1.#{page}.html")
       search_form_page = city_form_page.form_with(name: 'offer_filter_form') do |f|
