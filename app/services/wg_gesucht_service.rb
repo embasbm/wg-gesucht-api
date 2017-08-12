@@ -34,18 +34,18 @@ class WgGesuchtService
     pages_amount = city_form_page.links.select { |x| x.text.squish.match(/^[0-9]+$/) }.try(:last).try(:text).try(:squish).to_i
     0.upto(pages_amount) do |page|
       city_form_page = @a.get("#{@base_url}wg-zimmer-in-Hamburg.55.0.1.#{page}.html")
-      search_form_page = city_form_page.form_with(name: 'offer_filter_form') do |f|
-        fill_form(f)
-      end.submit
+      f = city_form_page.form_with(name: 'offer_filter_form')
+      next if f.blank?
+      fill_form(f)
+      search_form_page = f.submit
       fetch_data(search_form_page)
     end
   end
 
-  def fill_form(f)
-    my_age = 33
-    f.dFr = Date.parse('20/10/2017').strftime('%s')
-    f.dTo = Date.parse('01/11/2017').strftime('%s')
-    f.wgAge = my_age.to_s
+  def fill_form(forn)
+    forn.dFr = Date.parse('20/10/2017').strftime('%s')
+    forn.dTo = Date.parse('01/11/2017').strftime('%s')
+    forn.wgAge = '33'
   end
 
   def fetch_data(page)
