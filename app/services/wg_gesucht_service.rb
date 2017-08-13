@@ -84,7 +84,7 @@ class WgGesuchtService
     data_hash[:date_to] = page.search('.col-xs-12.col-sm-3').text.squish.split[6] || ''
     data_hash[:looking_for] = page.search('.ul-detailed-view-datasheet.print_text_left').last.text.squish || ''
     data_hash[:description] = page.search('.panelToTranslate').text.squish || ''
-    @interesting_rooms << data_hash
+    @interesting_rooms << data_hash unless @interesting_rooms.include?(data_hash)
   end
 
   def something_is_worng(adv_link, page)
